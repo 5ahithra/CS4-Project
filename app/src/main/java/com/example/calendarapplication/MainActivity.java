@@ -29,8 +29,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         setContentView(R.layout.activity_main);
         initWidgets();
         selectedDate = LocalDate.now();
-        setMonthView();
         periodDays = new ArrayList<>();
+        setMonthView();
+
+        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, selectedDate, periodDays);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
+        calendarRecyclerView.setLayoutManager(layoutManager);
+        calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
     private void initWidgets() {

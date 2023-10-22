@@ -8,13 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
+import java.util.AbstractList;
 import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private final ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
     private final LocalDate selectedDate;
-    private final ArrayList<LocalDate> periodDays;
+    ArrayList<LocalDate> periodDays = new ArrayList<>();
 
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate, ArrayList<LocalDate> periodDays) {
         this.daysOfMonth = daysOfMonth;
@@ -40,6 +41,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
         if (!dayText.isEmpty()) {
             int day = Integer.parseInt(dayText);
+            @NonNull
             LocalDate currentDate = LocalDate.of(selectedDate.getYear(), selectedDate.getMonthValue(), day);
 
             if (periodDays.contains(currentDate)) {
