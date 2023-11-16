@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import com.example.calendarapplication.R;
 
-// Add this import
+
 import android.widget.ImageView;
 
 import com.example.calendarapplication.R;
@@ -21,7 +21,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private LocalDate periodStartDate;
     private LocalDate periodEndDate;
 
-    // Define the OnItemListener interface
+
     public interface OnItemListener {
         void onItemClick(int position, String dayText);
     }
@@ -45,7 +45,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.166666666);
 
-        // Pass the listener to the ViewHolder
+        // Passing the listener to the ViewHolder
         return new CalendarViewHolder(view, onItemListener);
     }
 
@@ -66,6 +66,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
             if (isWithinPeriod(currentDate)) {
                 holder.redCircleImageView.setVisibility(View.VISIBLE);
+
             } else {
                 holder.redCircleImageView.setVisibility(View.INVISIBLE);
             }
