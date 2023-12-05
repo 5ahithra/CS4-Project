@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.content.Intent;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,11 +13,12 @@ import com.example.calendarapplication.CalendarAdapter;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit; // Add this import
 import java.util.ArrayList;
 import android.app.AlertDialog; // Add this import
+import com.example.calendarapplication.HomeActivity;
 
-
-public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
+public class MainActivity extends AppCompatActivity {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     private LocalDate periodStartDate;
     private LocalDate periodEndDate;
+    private LocalDate userPeriodStartDate;
 
     private static final int PERIOD_DURATION = 5;
 
@@ -44,6 +47,17 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private void initWidgets() {
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         monthYearText = findViewById(R.id.monthYearTV);
+
+        // Assuming the button ID for navigating to the home page is "homeButton"
+        findViewById(R.id.redirectToHomeButton).setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View v) {
+                // Start HomeActivity when the "home" button is clicked
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                intent.putExtra("periodStartDate", userPeriodStartDate.toString());
+                startActivity(intent);
+            }
+        });
     }
 
     private void showDatePickerDialog() {
@@ -62,8 +76,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                     periodStartDate = selectedDate;
                     periodEndDate = periodStartDate.plusDays(PERIOD_DURATION - 1);
+                    userPeriodStartDate = selectedDate;
+
 
                     setMonthView();
+                    updateCountdown(); // Update countdown when a new date is selected
                 }
         );
 
@@ -74,16 +91,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 .setPositiveButton("OK", (dialog, which) -> setMonthView())
                 .show();
     }
+    private void onPeriodStartDateSelected(LocalDate selectedDate) {
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        intent.putExtra("periodStartDate", selectedDate.toString()); // Added this line
+        startActivity(intent);
+    }
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        calendarAdapter = new CalendarAdapter(daysInMonth, selectedDate, periodStartDate, periodEndDate, this);
+        calendarAdapter = new CalendarAdapter(daysInMonth, selectedDate, periodStartDate, periodEndDate);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+
+        updateCountdown(); // Update countdown when setting month view
     }
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
@@ -108,6 +132,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         return date.format(formatter);
     }
 
+    private void updateCountdown() {
+        LocalDate currentDate = LocalDate.now();
+        long daysLeft = ChronoUnit.DAYS.between(currentDate, periodEndDate);
+
+        TextView countdownTextView = findViewById(R.id.countdownTextView);
+        countdownTextView.setText(daysLeft + " days left");
+    }
+
     public void previousMonthAction(View view) {
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
@@ -118,41 +150,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         setMonthView();
     }
 
-    @Override
-    public void onItemClick(int position, String dayText) {
-        if (!dayText.isEmpty()) {
-            int day = Integer.parseInt(dayText);
-            LocalDate currentDate = LocalDate.of(selectedDate.getYear(), selectedDate.getMonthValue(), day);
-
-            // Check if the selected date is not in the past or too far in the future
-            if (currentDate.isAfter(LocalDate.now()) && currentDate.isBefore(LocalDate.now().plusYears(1))) {
-                showConfirmationDialog(currentDate);
-            } else {
-                // Show an error message or handle it in an appropriate way
-                Toast.makeText(this, "Invalid date selection", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void showConfirmationDialog(final LocalDate selectedDate) {
-        new AlertDialog.Builder(this)
-                .setTitle("Confirm Period Start Date")
-                .setMessage("Do you want to log this date as the start of your period?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    // Calculate start and end dates of the period based on selectedDate
-                    periodStartDate = selectedDate;
-                    periodEndDate = periodStartDate.plusDays(PERIOD_DURATION - 1);
-
-                    // Notify the adapter that data has changed
-                    calendarAdapter.updatePeriodDates(periodStartDate, periodEndDate);
-                    calendarAdapter.notifyDataSetChanged();
-
-                    String message = "Period Start Date: " + selectedDate.toString();
-
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
+    public void redirectToHome(View view) {
+        startActivity(new Intent(MainActivity.this, HomeActivity.class));
     }
 }
-

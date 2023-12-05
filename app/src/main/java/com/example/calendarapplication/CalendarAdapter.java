@@ -7,34 +7,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import com.example.calendarapplication.R;
-
-
-import android.widget.ImageView;
-
-import com.example.calendarapplication.R;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private final ArrayList<String> daysOfMonth;
     private final LocalDate selectedDate;
-
     private LocalDate periodStartDate;
     private LocalDate periodEndDate;
 
-
-    public interface OnItemListener {
-        void onItemClick(int position, String dayText);
-    }
-
-    // Add a listener field
-    private OnItemListener onItemListener;
-
-    public CalendarAdapter(ArrayList<String> daysOfMonth, LocalDate selectedDate, LocalDate periodStartDate, LocalDate periodEndDate, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<String> daysOfMonth, LocalDate selectedDate, LocalDate periodStartDate, LocalDate periodEndDate) {
         this.daysOfMonth = daysOfMonth;
         this.selectedDate = selectedDate;
         this.periodStartDate = periodStartDate;
         this.periodEndDate = periodEndDate;
-        this.onItemListener = onItemListener; // Initialize the listener
+    }
+
+    public void updatePeriodDates(LocalDate startDate, LocalDate endDate) {
+        this.periodStartDate = startDate;
+        this.periodEndDate = endDate;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -44,15 +34,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.166666666);
-
-        // Passing the listener to the ViewHolder
-        return new CalendarViewHolder(view, onItemListener);
-    }
-
-    public void updatePeriodDates(LocalDate startDate, LocalDate endDate) {
-        this.periodStartDate = startDate;
-        this.periodEndDate = endDate;
-        notifyDataSetChanged();
+        return new CalendarViewHolder(view);
     }
 
     @Override
@@ -66,7 +48,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
             if (isWithinPeriod(currentDate)) {
                 holder.redCircleImageView.setVisibility(View.VISIBLE);
-
             } else {
                 holder.redCircleImageView.setVisibility(View.INVISIBLE);
             }
@@ -85,4 +66,3 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return daysOfMonth.size();
     }
 }
-
