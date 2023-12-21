@@ -1,5 +1,5 @@
 package com.example.calendarapplication;
-
+//Display current cycle with circles
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/teddybackground6"
     tools:context=".MainActivity">
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/back"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:background="@null"
             android:textStyle="bold"
             android:onClick="previousMonthAction"
@@ -33,14 +37,15 @@
             android:text="Feb 2021"
             android:textSize="20sp"
             android:textAlignment="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/forward"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:background="@null"
             android:textStyle="bold"
             android:onClick="nextMonthAction"
@@ -56,14 +61,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SUN"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
 
 
@@ -72,26 +79,30 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="MON"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TUE"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="WED"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
 
         <TextView
@@ -99,25 +110,28 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="THU"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FRI"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SAT"
-            android:textColor="@color/pink"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <!-- Circular Progress Bar -->
@@ -125,18 +139,45 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="562dp" />
+        android:layout_height="562dp"
+        android:textStyle="bold"/>
 
+    <!-- Horizontal layout for the two buttons -->
     <Button
         android:id="@+id/redirectToHomeButton"
-        android:layout_width="wrap_content"
+        android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/round_button"
         android:onClick="redirectToHome"
-        android:text="Go to Home Screen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="View Progress" />
+
+    <Button
+        android:id="@+id/changePeriodStartDateButton"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button"
+        android:onClick="changePeriodStartDate"
+        android:text="Pick Another Date" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <!-- Spacer to maintain alignment -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!-- Pick Another Date button -->
+
+    </LinearLayout>
+
+
+
 
     <ProgressBar
         android:id="@+id/circularProgressBar"

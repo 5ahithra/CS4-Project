@@ -4,6 +4,7 @@
     <color name="pink">#ED6589</color>
     <color name="black">#000202</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="progress_color">#00FF00</color> <!-- Add the progress_color here -->
+    <color name="brown">#6F4E37</color>
+    <color name="progress_color">#00FF00</color>
 
 </resources>
