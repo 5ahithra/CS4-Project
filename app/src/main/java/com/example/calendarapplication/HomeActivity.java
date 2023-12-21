@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         rootLayout.addView(additionalInfoTextView);
         rootLayout.addView(circularProgressBar);
         setContentView(rootLayout);
-        // Replace "periodStartDate" with the key used to pass the date
+
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("periodStartDate")) {
             String dateString = intent.getStringExtra("periodStartDate");
